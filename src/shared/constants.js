@@ -36,3 +36,10 @@ export const ITEM_NAMES = [
 ];
 
 export const ITEM_CAPITAL = 'Capital';
+export const ITEM_DRAWING = 'Drawing';
+
+export const Actions = Object.freeze({
+    AUTO: 'Auto',
+    MANUAL: 'Manual',
+    CANCEL: 'Cancel'
+})

@@ -25,16 +25,16 @@
     </div>
     <br />
 
-    <div v-if="appearPDF" class="row justify-center bottom-columns">
+    <div v-if="isGeneratePdf" class="row justify-center bottom-columns">
       <q-btn @click="createPDF()" round>
         <img src="https://img.icons8.com/office/30/000000/export-pdf.png" />
       </q-btn>
     </div>
-    <div v-else class="row justify-center bottom-columns">
+    <!-- <div v-else class="row justify-center bottom-columns">
       <q-btn :disable="pdfBtn" @click="createPDF()" round>
         <img src="https://img.icons8.com/office/30/000000/export-pdf.png" />
       </q-btn>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -46,6 +46,7 @@ import {
   ACCOUNT_NAMES,
   ITEM_NAMES,
   ITEM_CAPITAL,
+  ITEM_DRAWING,
 } from "../shared/constants";
 
 import VueSlickCarousel from "vue-slick-carousel";
@@ -77,15 +78,13 @@ export default {
   },
   methods: {
     calculateAuto() {
-       if(this.Assets && this.Liabilities){
+      if (this.Assets && this.Liabilities) {
         const value = this.Assets - this.Liabilities;
-        const data = this.accountMap.get(ACCOUNT_NAMES.CAPITAL);
-        data.push(value);
+        const data = this.accountMap.get(ACCOUNTS.CAPITAL);
+        data.splice(0, 1, { name: ITEM_CAPITAL, amount: value });
         console.log(data);
-
-      }
-      else{
-        console.log('No data');
+      } else {
+        console.log("No data");
       }
     },
     createPDF() {
@@ -128,11 +127,10 @@ export default {
         console.log(_data.value);
         return;
       }
-      if (_data.value.name == "Drawing") {
+      if (_data.value.name === ITEM_DRAWING) {
         _data.value.amount = -_data.value.amount;
       }
       const data = this.accountMap.get(_data.key);
-      console.log(_data.key);
       let isAlreayExist = false;
       for (let index = 0; index < data.length; index++) {
         const element = data[index];
@@ -222,16 +220,10 @@ export default {
       return fixedAssets + currentAssets;
     },
     Capitals() {
-
-      const liability = this.liabilities.reduce(
+      return this.capitals.reduce(
         (total, value) => Number(total) + Number(value.amount),
         0
       );
-      const capital = this.capitals.reduce(
-        (total, value) => Number(total) + Number(value.amount),
-        0
-      );
-      return liability + capital;
     },
     Liabilities() {
       return this.liabilities.reduce(
@@ -239,29 +231,31 @@ export default {
         0
       );
     },
-    appearPDF() {
-      const fixedAssets = this.fixedAssets.reduce(
-        (total, value) => Number(total) + Number(value.amount),
-        0
-      );
-      const currentAssets = this.currentAssets.reduce(
-        (total, value) => Number(total) + Number(value.amount),
-        0
-      );
-      const totalAssets = fixedAssets + currentAssets;
 
-      const liability = this.liabilities.reduce(
-        (total, value) => Number(total) + Number(value.amount),
-        0
-      );
-      const capital = this.capitals.reduce(
-        (total, value) => Number(total) + Number(value.amount),
-        0
-      );
-      const totalCapital = liability + capital;
-      console.log(totalCapital);
+    isGeneratePdf() {
+      // const fixedAssets = this.fixedAssets.reduce(
+      //   (total, value) => Number(total) + Number(value.amount),
+      //   0
+      // );
+      // const currentAssets = this.currentAssets.reduce(
+      //   (total, value) => Number(total) + Number(value.amount),
+      //   0
+      // );
+      // const totalAssets = fixedAssets + currentAssets;
 
-      if (totalAssets == totalCapital) {
+      // const liability = this.liabilities.reduce(
+      //   (total, value) => Number(total) + Number(value.amount),
+      //   0
+      // );
+      // const capital = this.capitals.reduce(
+      //   (total, value) => Number(total) + Number(value.amount),
+      //   0
+      // );
+      // const totalCapital = liability + capital;
+      // console.log("Total right side:", totalCapital);
+      if (this.Assets == 0) return false;
+
+      if (this.Assets == this.Liabilities + this.Capitals) {
         return true;
       } else {
         return false;

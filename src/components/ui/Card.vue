@@ -36,14 +36,12 @@
       </div>
     </q-card>
     <InputDialog :isOpen="isOpen" :defaultValue="defaultValue" @submitted="submitData($event)" />
-    <CapitalDialog :isOpen="isCapitalDialogOpen" />
   </div>
 </template>
 
 <script>
 import InputDialog from "./InputDialog";
-import CapitalDialog from "./CapitalDialog";
-import { ITEM_CAPITAL } from "../../shared/constants";
+import { ITEM_CAPITAL, Actions } from "../../shared/constants";
 export default {
   name: "card",
   props: {
@@ -59,16 +57,15 @@ export default {
     return {
       isOpen: false,
       defaultValue: "",
-      isCapitalDialogOpen: false,
     };
   },
   components: {
     InputDialog,
-    CapitalDialog,
   },
   created() {},
   methods: {
     openDialog(_defaultValue = "") {
+      console.log("open dialog...");
       this.isOpen = true;
       this.defaultValue = _defaultValue;
     },
@@ -94,30 +91,31 @@ export default {
             {
               label: "Auto Calculate",
               icon: "donut_large",
-              type: "auto",
+              type: Actions.AUTO,
             },
             {
               label: "Manual Input",
               icon: "create",
-              type: "manual",
+              type: Actions.MANUAL,
             },
             {},
             {
               label: "Cancel",
               icon: "arrow_back_ios",
-              type: "cancel",
+              type: Actions.CANCEL,
             },
           ],
         })
         .onOk((action) => {
-          if (action.type === "auto") {
-            this.$emit('autoCalculate');
-          }
-        })
-        .onOk((action) => {
-          if (action.type === "manual") {
-            this.openDialog(ITEM_CAPITAL);
-            // this.isOpen = true;
+          switch (action.type) {
+            case Actions.AUTO:
+              this.$emit("autoCalculate");
+              break;
+            case Actions.MANUAL:
+              this.openDialog(ITEM_CAPITAL);
+              break;
+            default:
+              console.log("cancel");
           }
         })
         .onCancel(() => {
@@ -125,11 +123,11 @@ export default {
         });
     },
   },
-  computed:{
-    calculateAuto(){
+  computed: {
+    calculateAuto() {
       return this.list;
-    }
-  }
+    },
+  },
 };
 </script>
 
