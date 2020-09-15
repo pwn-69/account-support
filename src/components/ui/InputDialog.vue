@@ -16,12 +16,13 @@
                 :options="options"
                 label="Add an account"
                 :readonly="isReadonly"
+                @input="onValueChange"
                 emit-value
                 map-options
               ></q-select>
             </div>
             <div class="col-4 col-md-6">
-              <q-input v-model="amount" label="Amount" placeholder="0" />
+              <q-input v-model="amount" label="Amount" placeholder="0" ref="amountRef" />
             </div>
           </div>
         </q-card-section>
@@ -83,6 +84,9 @@ export default {
       this.$emit("submitted", { name: this.name, amount: Number(this.amount) });
       this.name = "";
       this.amount = "";
+    },
+    onValueChange() {
+      this.$refs.amountRef.focus();
     },
   },
   computed: {
