@@ -80,9 +80,8 @@ export default {
     calculateAuto() {
       if (this.Assets && this.Liabilities) {
         const value = this.Assets - this.Liabilities;
-        const data = this.accountMap.get(ACCOUNTS.CAPITAL);
-        data.splice(0, 1, { name: ITEM_CAPITAL, amount: value });
-        console.log(data);
+        const data = { name: ITEM_CAPITAL, amount: value };
+        this.addAccountData({ key: ACCOUNTS.CAPITAL, value: data });
       } else {
         console.log("No data");
       }
