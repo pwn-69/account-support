@@ -2,7 +2,8 @@
   <div>
     <q-dialog v-model="isOpen" persistent transition-show="rotate" transition-hide="rotate">
       <q-card class="create-card">
-        <q-card-section>
+        <q-card-section style="background: #f44336;
+  font-family: 'Acme', sans-serif;">
           <div class="text-h6">Insert Amounts</div>
         </q-card-section>
 
@@ -31,7 +32,7 @@
 
         <q-card-actions align="right">
           <q-btn @click="cancelForm" label="Cancel" v-close-popup flat />
-          <q-btn @click="submitForm" label="Add" color="primary" :disabled="!name || !amount" />
+          <q-btn @click="submitForm" label="Add" :disabled="!name || !amount" style="background-color: #ff7961;" />
         </q-card-actions>
       </q-card>
     </q-dialog>

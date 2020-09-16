@@ -4,35 +4,35 @@
     <q-card class="my-card">
       <q-card-section class="card-title">{{param.value}}</q-card-section>
       <q-separator />
-      <q-card-section>
+      <q-card-section style="">
         <q-list v-for="(item, index) in list" :key="index">
           <q-item class="row">
             <q-item-section class="col-5">{{item.name}}</q-item-section>
-            <q-item-section class="col-6" side v-if="item.amount !== 0">{{item.amount}}</q-item-section>
+            <q-item-section class="col-6" side v-if="item.amount !== 0" style="color: #fff;">{{item.amount}}</q-item-section>
             <q-item-section class="col" side v-if="item.amount !== 0">
               <q-btn
                 @click="removeItem(item)"
                 icon="remove"
                 padding="none"
-                color="primary"
                 size="sm"
+                style="background: #ff7961;"
               ></q-btn>
             </q-item-section>
             <q-item-section v-else>
               <q-btn
                 outline
                 rounded
-                color="secondary"
                 label="Calculate"
                 padding="none"
                 @click="show()"
+                style="background-color: #4d2c91;"
               ></q-btn>
             </q-item-section>
           </q-item>
         </q-list>
       </q-card-section>
       <div class="q-pa-md q-gutter-sm">
-        <q-btn round color="primary" icon="add" @click="openDialog()" />
+        <q-btn round icon="add" @click="openDialog()" style="background-color: #ff7961;" />
       </div>
     </q-card>
     <InputDialog :isOpen="isOpen" :defaultValue="defaultValue" @submitted="submitData($event)" />
@@ -132,13 +132,17 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Acme&display=swap');
 .card-title {
-  font-size: 30px;
+  font-size: 25px;
 }
 .my-card {
   width: 100%;
   height: 100%;
   border-radius: 20px;
+  color: #fff;
+  background: #f44336;
+  font-family: 'Acme', sans-serif;
 }
 .my-card .q-pa-md {
   text-align: right;

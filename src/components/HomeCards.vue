@@ -265,7 +265,12 @@ export default {
 };
 </script>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Acme&display=swap');
 .doc-container {
   outline: none;
+}
+.bottom-columns{
+  font-size: 15px;
+  font-family: 'Acme', sans-serif;
 }
 </style>
