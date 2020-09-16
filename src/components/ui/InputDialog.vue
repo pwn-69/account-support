@@ -21,7 +21,7 @@
               ></q-select>
             </div>
             <div class="col-4 col-md-6">
-              <q-input v-model="amount" label="Amount" placeholder="0" />
+              <q-input :autofocus="focus" v-model="amount" label="Amount" placeholder="0" />
             </div>
           </div>
         </q-card-section>
@@ -52,6 +52,7 @@ export default {
   },
   data() {
     return {
+      focus: false,
       name: "",
       amount: "",
       options: [],
