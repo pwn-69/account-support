@@ -4,9 +4,7 @@
       <q-toolbar class="toolbar">
         <q-toolbar-title>Accounting</q-toolbar-title>
 
-        <q-btn flat @click="isOpenFullscreen = true">
-          <img src="https://img.icons8.com/material-outlined/24/000000/documents--v2.png" />
-        </q-btn>
+        <q-btn flat round icon="menu_book" @click="isOpenFullscreen = true"></q-btn>
       </q-toolbar>
     </q-header>
     <br />
