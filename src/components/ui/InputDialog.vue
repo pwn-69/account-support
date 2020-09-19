@@ -32,7 +32,12 @@
 
         <q-card-actions align="right">
           <q-btn @click="cancelForm" label="Cancel" v-close-popup flat />
-          <q-btn @click="submitForm" label="Add" :disabled="!name || !amount" style="background-color: #ff7961;" />
+          <q-btn
+            @click="submitForm"
+            label="Add"
+            :disabled="!name || !amount || amount == 0"
+            style="background-color: #ff7961;"
+          />
         </q-card-actions>
       </q-card>
     </q-dialog>

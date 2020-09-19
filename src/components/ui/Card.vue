@@ -4,11 +4,16 @@
     <q-card class="my-card">
       <q-card-section class="card-title">{{param.value}}</q-card-section>
       <q-separator />
-      <q-card-section style="">
+      <q-card-section style>
         <q-list v-for="(item, index) in list" :key="index">
           <q-item class="row">
             <q-item-section class="col-5">{{item.name}}</q-item-section>
-            <q-item-section class="col-6" side v-if="item.amount !== 0" style="color: #fff;">{{item.amount}}</q-item-section>
+            <q-item-section
+              class="col-6"
+              side
+              v-if="item.amount !== 0"
+              style="color: #fff;"
+            >{{item.amount}}</q-item-section>
             <q-item-section class="col" side v-if="item.amount !== 0">
               <q-btn
                 @click="removeItem(item)"
@@ -26,6 +31,7 @@
                 padding="none"
                 @click="show()"
                 style="background-color: #4d2c91;"
+                :disabled="!canCalculateCapital"
               ></q-btn>
             </q-item-section>
           </q-item>
@@ -52,6 +58,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    canCalculateCapital: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -76,7 +86,6 @@ export default {
       this.isOpen = false;
     },
     removeItem(item) {
-      console.log(item.name);
       if (item.name !== ITEM_CAPITAL) {
         this.$store.dispatch("ItemStates/SET_ITEM_ENABLE", item.name);
       }
@@ -132,7 +141,7 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Acme&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Acme&display=swap");
 .card-title {
   font-size: 25px;
 }
@@ -142,7 +151,7 @@ export default {
   border-radius: 20px;
   color: #fff;
   background: #f44336;
-  font-family: 'Acme', sans-serif;
+  font-family: "Acme", sans-serif;
 }
 .my-card .q-pa-md {
   text-align: right;
