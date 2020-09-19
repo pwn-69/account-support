@@ -195,6 +195,10 @@ export default {
       );
       capitalItem.amount = 0;
       this.isAutoCapital = false;
+      this.$q.notify({
+        type: "info",
+        message: `Capital item has been reset.`,
+      });
     },
   },
 
