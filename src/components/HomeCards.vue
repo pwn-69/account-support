@@ -5,7 +5,6 @@
         <card
           :param="{name: key, value: title}"
           :list="accountMap.get(key)"
-          :canCalculateCapital="isCalculateCaptial"
           @autoCalculate="calculateAuto()"
           @postedData="addAccountData($event)"
           @deleteData="deleteItem($event)"
@@ -31,6 +30,11 @@
         <img src="https://img.icons8.com/office/30/000000/export-pdf.png" />
       </q-btn>
     </div>
+    <!-- <div v-else class="row justify-center bottom-columns">
+      <q-btn :disable="pdfBtn" @click="createPDF()" round>
+        <img src="https://img.icons8.com/office/30/000000/export-pdf.png" />
+      </q-btn>
+    </div>-->
   </div>
 </template>
 
@@ -53,7 +57,6 @@ export default {
   data() {
     return {
       pdfBtn: true,
-      isAutoCapital: false,
       accountNames: [], // account names
       accountMap: new Map(), // for all account data
       fixedAssets: [],
@@ -76,7 +79,6 @@ export default {
   methods: {
     calculateAuto() {
       if (this.Assets && this.Liabilities) {
-        this.isAutoCapital = true;
         const value = this.Assets - this.Liabilities;
         const data = { name: ITEM_CAPITAL, amount: value };
         this.addAccountData({ key: ACCOUNTS.CAPITAL, value: data });
@@ -121,23 +123,26 @@ export default {
 
     addAccountData(_data) {
       if (!_data.value) {
+        console.log(_data.value);
         return;
       }
       if (_data.value.name === ITEM_DRAWING) {
         _data.value.amount = -_data.value.amount;
       }
       const data = this.accountMap.get(_data.key);
-
-      if (_data.value.name === ITEM_CAPITAL) {
-        const capitalData = data.find((item) => item.name === ITEM_CAPITAL);
-        capitalData.amount = _data.value.amount;
-      } else {
-        data.push(_data.value);
-        if (this.isAutoCapital) {
-          this.resetCapitalItem();
+      let isAlreayExist = false;
+      for (let index = 0; index < data.length; index++) {
+        const element = data[index];
+        if (element.name === _data.value.name) {
+          element.amount = _data.value.amount;
+          isAlreayExist = true;
+          break;
         }
       }
-
+      if (!isAlreayExist) {
+        data.push(_data.value);
+      }
+      // this.accountMap.set(_data.key, data);
       switch (_data.key) {
         case ACCOUNTS.FIXED_ASSET:
           this.fixedAssets = data;
@@ -163,12 +168,10 @@ export default {
       });
       // specific account control
       if (_data.value === ITEM_CAPITAL) {
+        console.log("capital account");
         data[del].amount = 0;
       } else {
         data.splice(del, 1);
-        if (this.isAutoCapital) {
-          this.resetCapitalItem();
-        }
       }
 
       this.accountMap.set(_data.key, data);
@@ -187,19 +190,6 @@ export default {
           break;
       }
     },
-
-    resetCapitalItem() {
-      const capitalAccounts = this.accountMap.get(ACCOUNTS.CAPITAL);
-      const capitalItem = capitalAccounts.find(
-        (item) => item.name === ITEM_CAPITAL
-      );
-      capitalItem.amount = 0;
-      this.isAutoCapital = false;
-      this.$q.notify({
-        type: "info",
-        message: `Capital item has been reset.`,
-      });
-    },
   },
 
   created() {
@@ -212,9 +202,9 @@ export default {
     });
     this.$store.dispatch("ItemStates/IMPORT_ITEMS", preparedItems);
 
-    // initialize capital item
-    const capitalAccounts = this.accountMap.get(ACCOUNTS.CAPITAL);
-    capitalAccounts.push({ name: ITEM_CAPITAL, amount: 0 });
+    // specific account control
+    const capitalData = this.accountMap.get(ACCOUNTS.CAPITAL);
+    capitalData.push({ name: ITEM_CAPITAL, amount: 0 });
   },
   computed: {
     Assets() {
@@ -242,6 +232,26 @@ export default {
     },
 
     isGeneratePdf() {
+      // const fixedAssets = this.fixedAssets.reduce(
+      //   (total, value) => Number(total) + Number(value.amount),
+      //   0
+      // );
+      // const currentAssets = this.currentAssets.reduce(
+      //   (total, value) => Number(total) + Number(value.amount),
+      //   0
+      // );
+      // const totalAssets = fixedAssets + currentAssets;
+
+      // const liability = this.liabilities.reduce(
+      //   (total, value) => Number(total) + Number(value.amount),
+      //   0
+      // );
+      // const capital = this.capitals.reduce(
+      //   (total, value) => Number(total) + Number(value.amount),
+      //   0
+      // );
+      // const totalCapital = liability + capital;
+      // console.log("Total right side:", totalCapital);
       if (this.Assets == 0) return false;
 
       if (this.Assets == this.Liabilities + this.Capitals) {
@@ -250,20 +260,16 @@ export default {
         return false;
       }
     },
-
-    isCalculateCaptial() {
-      return this.Assets > 0 && this.Liabilities > 0;
-    },
   },
 };
 </script>
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Acme&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Acme&display=swap');
 .doc-container {
   outline: none;
 }
-.bottom-columns {
+.bottom-columns{
   font-size: 15px;
-  font-family: "Acme", sans-serif;
+  font-family: 'Acme', sans-serif;
 }
 </style>
