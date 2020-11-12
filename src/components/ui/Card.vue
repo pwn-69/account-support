@@ -1,7 +1,7 @@
 
 <template>
   <div>
-    <q-card class="my-card">
+    <q-card class="my-card bg-card">
       <q-card-section class="card-title">{{param.value}}</q-card-section>
       <q-separator />
       <q-card-section style>
@@ -38,7 +38,7 @@
         </q-list>
       </q-card-section>
       <div class="q-pa-md q-gutter-sm">
-        <q-btn round icon="add" @click="openDialog()" style="background-color: #ff7961;" />
+        <q-btn round icon="add" @click="openDialog()" class="bg-primary"/>
       </div>
     </q-card>
     <InputDialog :isOpen="isOpen" :defaultValue="defaultValue" @submitted="submitData($event)" />
@@ -141,7 +141,6 @@ export default {
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Acme&display=swap");
 .card-title {
   font-size: 25px;
 }
@@ -149,8 +148,6 @@ export default {
   width: 100%;
   height: 100%;
   border-radius: 20px;
-  color: #fff;
-  background: #f44336;
   font-family: "Acme", sans-serif;
 }
 .my-card .q-pa-md {

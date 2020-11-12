@@ -1,7 +1,7 @@
 <template>
   <q-layout class="layout-page" view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar class="toolbar">
+      <q-toolbar class="toolbar bg-primary">
         <q-toolbar-title>Accounting</q-toolbar-title>
 
         <q-btn flat round icon="menu_book" @click="isOpenFullscreen = true"></q-btn>
@@ -29,9 +29,7 @@ export default {
 };
 </script>
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Acme&display=swap");
 .toolbar {
-  background: #ba000d;
   font-family: "Acme", sans-serif;
 }
 </style>

@@ -2,8 +2,7 @@
   <div>
     <q-dialog v-model="isOpen" persistent transition-show="rotate" transition-hide="rotate">
       <q-card class="create-card">
-        <q-card-section style="background: #f44336;
-  font-family: 'Acme', sans-serif;">
+        <q-card-section class="bg-primary">
           <div class="text-h6">Insert Amounts</div>
         </q-card-section>
 
@@ -36,7 +35,7 @@
             @click="submitForm"
             label="Add"
             :disabled="!name || !amount || amount == 0"
-            style="background-color: #ff7961;"
+            class="bg-accent"
           />
         </q-card-actions>
       </q-card>
@@ -106,6 +105,7 @@ export default {
 
 <style scoped>
 .create-card {
+  font-family: "Acme", sans-serif;
   width: 100%;
   max-width: 300px;
 }
